@@ -1,32 +1,6 @@
 # Azure RAG App
 
-A minimal Retrieval-Augmented Generation (RAG) web app using Azure OpenAI, Azure AI Search, a FastAPI backend, and a vanilla JavaScript frontend. Designed for local development and deployment to Azure Web App.
-
-## Project layout
-```
-azure-rag-app/
-├─ pyproject.toml
-├─ .env                      # local-only secrets (NOT checked in)
-├─ config/
-│  ├─ __init__.py
-│  └─ settings.py            # config handling (env + defaults)
-├─ models/
-│  ├─ __init__.py
-│  └─ chat.py                # Pydantic models for API
-├─ app/
-│  ├─ __init__.py
-│  ├─ app.py                 # FastAPI entrypoint
-│  ├─ services/
-│  │  ├─ openai_client.py    # Azure OpenAI helper
-│  │  └─ search_client.py    # Azure AI Search helper
-├─ templates/
-│  └─ index.html             # vanilla JS chat UI
-└─ static/
-   ├─ css/
-   │  └─ site.css
-   └─ js/
-      └─ chat.js
-```
+A minimal Retrieval-Augmented Generation (RAG) web app using Azure OpenAI, Azure AI Search, FastAPI backend, and a lightweight vanilla JavaScript frontend. Suitable for deployment to Azure Web App.
 
 ## Prerequisites
 - Python 3.10+
@@ -39,7 +13,7 @@ azure-rag-app/
   - `AZURE_SEARCH_ENDPOINT`
   - `AZURE_SEARCH_KEY`
   - `AZURE_SEARCH_INDEX`
-  - Optional: `AZURE_OPENAI_API_VERSION`, `AZURE_SEARCH_TOP_K`, `AZURE_OPENAI_MAX_TOKENS`, `AZURE_OPENAI_TEMPERATURE`
+  - Optional: `AZURE_SEARCH_TOP_K`, `AZURE_OPENAI_MAX_TOKENS`, `AZURE_OPENAI_TEMPERATURE`
 
 ## Running locally
 ```bash
@@ -52,8 +26,8 @@ Visit http://localhost:8000 to use the app.
 
 ## Deploying to Azure Web App
 1. Create an Azure Web App (Python runtime) and set the environment variables above in the App Settings.
-2. Use a startup command such as:
+2. Enable the startup command, for example:
    ```bash
    gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.app:app
    ```
-3. Deploy the project files (e.g., via ZIP deploy or GitHub Actions). The FastAPI app serves the API, HTML template, and static assets.
+3. Deploy the project files (e.g., via ZIP deploy or GitHub Actions). The FastAPI app will serve both the API and static frontend from the `public/` directory.
