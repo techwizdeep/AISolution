@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azure RAG App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 960px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      header {
+        margin-bottom: 24px;
+      }
+      textarea,
+      button {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      textarea {
+        padding: 12px;
+        font-size: 1rem;
+        min-height: 120px;
+      }
+      button {
+        padding: 12px;
+        margin-top: 8px;
+        font-size: 1rem;
+        background: #0078d4;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .answer {
+        margin-top: 24px;
+        padding: 16px;
+        background: #f6f6f6;
+        border-radius: 4px;
+      }
+      .sources {
+        margin-top: 12px;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Azure RAG App</h1>
+      <p>
+        Ask questions answered with your Azure AI Search index and Azure OpenAI
+        model.
+      </p>
+    </header>
+    <main>
+      <form id="qa-form">
+        <label for="question">Ask a question</label>
+        <textarea id="question" required placeholder="What do I need to know?"></textarea>
+        <button type="submit">Ask</button>
+      </form>
+      <section class="answer" id="answer" hidden>
+        <h2>Answer</h2>
+        <p id="answer-text"></p>
+        <div class="sources" id="sources"></div>
+      </section>
+    </main>
+    <script>
+      const form = document.getElementById("qa-form");
+      const questionInput = document.getElementById("question");
+      const answerSection = document.getElementById("answer");
+      const answerText = document.getElementById("answer-text");
+      const sourcesDiv = document.getElementById("sources");
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const question = questionInput.value.trim();
+        if (!question) return;
+
+        form.querySelector("button").disabled = true;
+        answerText.textContent = "Working on it...";
+        sourcesDiv.textContent = "";
+        answerSection.hidden = false;
+
+        try {
+          const response = await fetch("/ask", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || "Request failed");
+          }
+
+          const data = await response.json();
+          answerText.textContent = data.answer || "No answer returned.";
+          if (data.sources?.length) {
+            sourcesDiv.innerHTML = `<strong>Sources:</strong> ${data.sources
+              .map((s) => `<span>${s}</span>`)
+              .join(", ")}`;
+          } else {
+            sourcesDiv.textContent = "Sources: none";
+          }
+        } catch (error) {
+          answerText.textContent = error.message;
+        } finally {
+          form.querySelector("button").disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
