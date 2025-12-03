@@ -1,0 +1,49 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 960px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+header {
+  margin-bottom: 24px;
+}
+
+textarea,
+button {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+textarea {
+  padding: 12px;
+  font-size: 1rem;
+  min-height: 120px;
+}
+
+button {
+  padding: 12px;
+  margin-top: 8px;
+  font-size: 1rem;
+  background: #0078d4;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.answer {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f6f6f6;
+  border-radius: 4px;
+}
+
+.sources {
+  margin-top: 12px;
+  font-size: 0.9rem;
+}

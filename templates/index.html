@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Azure RAG App</title>
+    <link rel="stylesheet" href="/static/css/site.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Azure RAG App</h1>
+      <p>
+        Ask questions answered with your Azure AI Search index and Azure OpenAI
+        model.
+      </p>
+    </header>
+    <main>
+      <form id="qa-form">
+        <label for="question">Ask a question</label>
+        <textarea
+          id="question"
+          required
+          placeholder="What do I need to know?"
+        ></textarea>
+        <button type="submit">Ask</button>
+      </form>
+      <section class="answer" id="answer" hidden>
+        <h2>Answer</h2>
+        <p id="answer-text"></p>
+        <div class="sources" id="sources"></div>
+      </section>
+    </main>
+    <script src="/static/js/chat.js"></script>
+  </body>
+</html>
